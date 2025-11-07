@@ -1,6 +1,7 @@
 import './App.css'
 import { useState } from 'react'
 import { URL } from './constants';
+import Answers from './components/Answers';
 
 function App() {
 
@@ -26,8 +27,16 @@ function App() {
       body: JSON.stringify(payload)
     })
 
-    response = await response.json(); 
-    setResult(response.candidates[0].content.parts[0].text) 
+    response = await response.json();
+    
+    let dataString = response.candidates[0].content.parts[0].text;
+    dataString = dataString.split("* ");
+    dataString = dataString.map(item => item.trim());
+
+    console.log('====================================');
+    console.log(dataString);
+    console.log('====================================');
+    setResult(dataString) 
   }
 
   
@@ -38,7 +47,12 @@ function App() {
         <div className='col-span-4 p-10'>
           <div className="container h-180 overflow-y-scroll">
             <div className='text-white'> 
-              {result}
+            {/* {result} */}
+              {
+              result && result.map((item,index) => (
+                  <Answers ans = {item} key={index} />
+                ))
+              }
             </div> 
         </div>
         
