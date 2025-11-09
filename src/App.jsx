@@ -30,10 +30,8 @@ function App() {
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
-
-    console.log("====================================");
-    console.log(dataString);
-    console.log("====================================");
+    // console.log(dataString);
+    
     setResult(dataString);
   };
 
@@ -47,8 +45,8 @@ function App() {
               {/* {result} */}
               {result &&
                 result.map((item, index) => (
-                  <li className="text-left p-2">
-                    <Answers ans={item} key={index} />
+                  <li key={index} className="text-left p-1">
+                    <Answers ans={item} totalResult={result.length} index={index} />
                   </li>
                 ))}
             </ul>
