@@ -1,8 +1,12 @@
-const Answers = () => {
+const Answers = ({ ans, key }) => {
+    
+    console.log('====================================');
+    console.log(ans,key);
+    console.log('====================================');
     return (
-        <div>
-            <h1>Answer Component</h1>
-        </div>
+        <>
+            {ans}
+        </>
     )
 }
 
