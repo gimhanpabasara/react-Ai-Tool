@@ -44,39 +44,44 @@ function App() {
     <div className="grid grid-cols-5 h-screen text-center">
       <div className="col-span-1 bg-zinc-700"></div>
       <div className="col-span-4 p-10">
-        <div className="container h-130 overflow-y-scroll">
+        <div className="container h-130 scroll-auto overflow-y-auto mb-5">
           <div className="text-zinc-300">
             <ul>
-              {result.map((item, index) =>
-                item.type == "q" ? (
-                  <li key={index + Math.random()} className="text-left p-1">
-                    <Answers ans={item.text} totalResult={1} index={index} />
-                  </li>
-                ) : (
-                  item.text.map((ansItem, ansIndex) => (
+              {result.map((item, index) => (
+                <div
+                  key={index + Math.random()}
+                  className={item.type == "q" ? "flex justify-end" : ""}
+                >
+                  {item.type == "q" ? (
                     <li
-                      key={ansIndex + Math.random()}
-                      className="text-left p-1"
+                      key={index + Math.random()}
+                      className="text-right p-1 border-5 bg-zinc-700 border-zinc-700 rounded-tl-2xl rounded-br-2xl rounded-bl-2xl text-white w-fit"
                     >
                       <Answers
-                        ans={ansItem}
-                        totalResult={item.length}
-                        index={ansIndex}
+                        ans={item.text}
+                        totalResult={1}
+                        index={index}
+                        type={item.type}
                       />
                     </li>
-                  ))
-                )
-              )}
+                  ) : (
+                    item.text.map((ansItem, ansIndex) => (
+                      <li
+                        key={ansIndex + Math.random()}
+                        className="text-left p-1"
+                      >
+                        <Answers
+                          ans={ansItem}
+                          totalResult={item.length}
+                          type={item.type}
+                          index={ansIndex}
+                        />
+                      </li>
+                    ))
+                  )}
+                </div>
+              ))}
             </ul>
-
-            {/* <ul>
-              {result &&
-                result.map((item, index) => (
-                  <li key={index} className="text-left p-1">
-                    <Answers ans={item} totalResult={result.length} index={index} />
-                  </li>
-                ))}
-            </ul>  */}
           </div>
         </div>
 
