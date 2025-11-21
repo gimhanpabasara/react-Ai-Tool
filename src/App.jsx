@@ -6,6 +6,7 @@ import Answers from "./components/Answers";
 function App() {
   const [question, setQuestion] = useState("");
   const [result, setResult] = useState([]);
+  const [recentHistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem("history")));
 
   const payload = {
     contents: [
@@ -20,6 +21,17 @@ function App() {
   };
 
   const askQuestion = async () => {
+    if (localStorage.getItem("history")) {
+      let history = JSON.parse(localStorage.getItem('history'));
+      history = [question, ...history];
+      localStorage.setItem("history", JSON.stringify(history));
+      setRecentHistory(history)
+    } else {
+      localStorage.setItem("history", JSON.stringify([question]));
+      setRecentHistory([question])
+    }
+
+    localStorage.setItem("history", [question]);
     let response = await fetch(URL, {
       method: "POST",
       body: JSON.stringify(payload),
@@ -30,19 +42,36 @@ function App() {
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
-    // console.log(dataString); 
- 
-    setResult([...result,{type:'q',text:question},{type:'a',text:dataString}]);
+    // console.log(dataString);
 
+    setResult([
+      ...result,
+      { type: "q", text: question },
+      { type: "a", text: dataString },
+    ]);
   };
 
   console.log("====================================");
-  console.log(result);
+  console.log(recentHistory);
   console.log("====================================");
 
   return (
     <div className="grid grid-cols-5 h-screen text-center">
-      <div className="col-span-1 bg-zinc-700"></div>
+
+      <div className="col-span-1 bg-zinc-700">
+        <ul>
+          {
+            recentHistory && recentHistory.map((item) =>{
+              <li>
+                {
+                  item
+                }
+              </li>
+            })
+          }
+        </ul>
+      </div>
+
       <div className="col-span-4 p-10">
         <div className="container h-130 scroll-auto overflow-y-auto mb-5">
           <div className="text-zinc-300">
